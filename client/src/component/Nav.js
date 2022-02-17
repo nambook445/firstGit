@@ -12,6 +12,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
+const axios = require('axios').default;//Axios
+
 const pages = ['홈', '글쓰기', '게시판'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -28,7 +30,16 @@ const Nav = () => {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(
-      alert('hi')
+      axios.get('http://localhost:8080/board/1')
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      // .then(function () {
+      //   // 항상 실행되는 영역
+      // });  
     );
   };
 

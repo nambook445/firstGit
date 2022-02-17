@@ -16,6 +16,10 @@ const bcrypt = require('bcrypt');
 const { Axios } = require('axios');
 const saltRounds = 10;
 
+const cors = require('cors');
+
+
+app.use(cors())
 app.set('view engine', 'pug');
 app.set('views', './views');
 app.locals.pretty = true;

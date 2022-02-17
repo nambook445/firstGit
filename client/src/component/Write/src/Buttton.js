@@ -5,10 +5,12 @@ import Box from '@mui/material/Box';
 
 export default function BasicButtons() {
   return (
-    <Box>
+    <Box sx={{
+      display: 'flex',
+      justifyContent:'center'
+      }}>
       <Button variant="contained">확인</Button>
-      <Button variant="contained">수정</Button>
-      <Button variant="contained">삭제</Button>
+      <Button variant="contained">취소</Button>
     </Box>
   );
 }

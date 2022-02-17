@@ -37,8 +37,6 @@ export default function SimplePaper() {
           }}>
           <Title />
           <Desc />
-        </Box>
-        <Box sx={{ flexGrow: 1, display: 'flex',alignItems:'flex-start' }}>  
           <BasicButtons />
         </Box>
       </Paper>
