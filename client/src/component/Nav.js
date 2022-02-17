@@ -11,10 +11,8 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import { Link } from 'react-router-dom'
 
-const axios = require('axios').default;//Axios
-
-const pages = ['홈', '글쓰기', '게시판'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const Nav = () => {
@@ -22,25 +20,14 @@ const Nav = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
+    setAnchorElNav(event.target);
   };
   const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+    setAnchorElUser(event.target)
   };
 
   const handleCloseNavMenu = () => {
-    setAnchorElNav(
-      axios.get('http://localhost:8080/board/1')
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-      // .then(function () {
-      //   // 항상 실행되는 영역
-      // });  
-    );
+    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
@@ -89,11 +76,21 @@ const Nav = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+              <Link to="/" style={{textDecoration: 'none'}}>
+                <Button sx={{ my: 2, color: 'black', display: 'block' }}>
+                  홈
+                </Button>
+              </Link>
+              <Link to="/pages" style={{textDecoration: 'none'}}>
+                <Button sx={{ my: 2, color: 'black', display: 'block' }}>
+                  글쓰기
+                </Button></Link>
+              <Link to="/board" style={{textDecoration: 'none'}}>
+                <Button
+                sx={{ my: 2, color: 'black', display: 'block' }}>
+                게시판
+                </Button>
+              </Link>
             </Menu>
           </Box>
           <Typography
@@ -105,17 +102,22 @@ const Nav = () => {
             마감일기
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
+            <Link to="/" style={{textDecoration: 'none'}}>
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
+                홈
               </Button>
-            ))}
+            </Link>
+            <Link to="/pages" style={{textDecoration: 'none'}}>
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
+                글쓰기
+              </Button>
+            </Link>
+            <Link to="/board" style={{textDecoration: 'none'}}>
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
+                게시판
+              </Button>
+            </Link>
           </Box>
-
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

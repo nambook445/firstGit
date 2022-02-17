@@ -17,6 +17,7 @@ const { Axios } = require('axios');
 const saltRounds = 10;
 
 const cors = require('cors');
+const test = require('./Router/test');
 
 
 app.use(cors())
@@ -66,6 +67,8 @@ passport.use(new LocalStrategy(
   }
 ));
 
+
+app.use('/api', test);
 
 app.get('/fetch', (req, res)=>res.render('fetch'))
 
