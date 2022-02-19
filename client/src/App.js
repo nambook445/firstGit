@@ -8,13 +8,7 @@ import axios from 'axios'
 
 
 
-export default function App() {
-  const callApi = async () => {
-    axios.get("http://localhost:8080/api").then((res) => console.log(res.data.test))
-  };
-  React.useEffect(()=>{
-    callApi();
-  }, []);
+export default function App() { 
   return (
     <BrowserRouter>
       <Container>
