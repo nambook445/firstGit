@@ -15,7 +15,7 @@ export default function App() {
         <Nav/>
         <Routes>
           <Route path="/board/" element={<CollapsibleTable/>}></Route>
-          <Route path="/pages" element={<SimplePaper/>}></Route>  
+          <Route path="/pages/" element={<SimplePaper/>}></Route>  
         </Routes>
       </Container>
     </BrowserRouter>  

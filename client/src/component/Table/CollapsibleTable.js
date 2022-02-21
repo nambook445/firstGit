@@ -16,7 +16,11 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import axios from 'axios';
-import { textAlign } from '@mui/system';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -84,6 +88,12 @@ TablePaginationActions.propTypes = {
 export default function CustomPaginationActionsTable() {
   const [state, setState] = React.useState([])
   const [hasError, setHasError] = React.useState(false)
+  //Accordion component
+  const [expanded, setExpanded] = React.useState(false);
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+  //Axios 
   React.useEffect(async () => {
     await axios.get("http://localhost:8080/api").then(res => setState(res.data.test)).catch(err => setHasError(true))}, []);
     
@@ -112,17 +122,28 @@ export default function CustomPaginationActionsTable() {
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((state) => (
-            <TableRow key={state.id}>
-              <TableCell component="th" scope="row">
-                {state.title}
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {state.created}
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {state.nickname}
-              </TableCell>
-            </TableRow>
+            <Accordion expanded={expanded === state.id} onChange={handleChange(state.id)}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1bh-content"
+                id="panel1bh-header"
+              >
+                <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                  {state.title}
+                </Typography>
+                <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                  {state.created}
+                </Typography>
+                <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                  {state.nickname}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  {state.description}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
           ))}
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
