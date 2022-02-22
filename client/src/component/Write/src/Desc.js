@@ -13,10 +13,10 @@ export default function Desc() {
     <Box>
       <TextField
         id="outlined-multiline-static"
+        name="description"
         label="Multiline"
         multiline
         rows={20}
-        defaultValue="Default Value"
         value={value}
         onChange={handleChange}
         sx={{width: '100%'}}

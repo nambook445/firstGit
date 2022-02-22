@@ -1,14 +1,37 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import Title from './src/Title';
-import Desc from './src/Desc';
-import BasicButtons from './src/Buttton';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import axios from 'axios';
+
+import { useForm } from "react-hook-form";
+
+
 
 
 export default function SimplePaper() {
-  return (
-    <form>
+  const [hasError, setHasError] = React.useState(false)
+  const [title, setTitle] = React.useState([]);
+  const [description, setDescription] = React.useState([]);
+
+
+      const onSubmit = (e) => {
+        e.preventDefault();
+        let data ={
+          title: title,
+          description: description
+        };
+        axios.post("http://localhost:8080/api", JSON.stringify(data), {
+          headers: {
+            "Content-Type": `application/json`
+          }
+        }
+      ).then(res => console.log(res)).catch(err => setHasError(true))}
+    
+      
+      return (
+    <form onSubmit={onSubmit}>
       <Paper elevation={3} 
         sx={{
           display: 'flex',
@@ -21,16 +44,31 @@ export default function SimplePaper() {
         }}
       >
         <Box sx={{
-          m: 1, 
+          m: 2, 
           display: 'flex',
           flexDirection: 'column',
-          margin: 2,
           justifyContent:'flex-start',
           flexGrow: 3
           }}>
-          <Title />
-          <Desc />
-          <BasicButtons />
+          <TextField id="outlined-basic" label="Outlined" name="title" value={title} onChange={(e) => {setTitle(e.target.value)}} variant="outlined" margin="normal" sx={{width: '100%'}} />
+
+          <TextField
+            id="outlined-multiline-static"
+            name="description"
+            label="Multiline"
+            multiline
+            rows={20}
+            margin="normal"
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+            sx={{width: '100%'}}
+          />
+          <Box sx={{
+            display: 'flex',
+            justifyContent:'center'
+            }}>
+            <Button type="submit" variant="contained">확인</Button>
+          </Box>
         </Box>
       </Paper>
     </form>

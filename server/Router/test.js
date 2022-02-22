@@ -10,5 +10,12 @@ router.get('/', (req, res)=>{
   });
 });
 
+router.post('/', (req, res)=>{
+  const sql = `INSERT INTO topic (title, description, created) VALUES(?, ?, NOW())`
+  db.query(sql, [req.body.title, req.body.description], (err, results)=>{
+    res.send('ok');
+  });
+})
+
 
 module.exports = router;

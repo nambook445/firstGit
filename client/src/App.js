@@ -4,7 +4,6 @@ import Nav from './component/Nav';
 import CollapsibleTable from './component/Table/CollapsibleTable';
 import SimplePaper from './component/Write/Write';
 import { BrowserRouter, Route, Routes} from 'react-router-dom';
-import axios from 'axios'
 
 
 

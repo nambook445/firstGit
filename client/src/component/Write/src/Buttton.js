@@ -8,7 +8,7 @@ export default function BasicButtons() {
       display: 'flex',
       justifyContent:'center'
       }}>
-      <Button variant="contained">확인</Button>
+      <Button type="submit" variant="contained">확인</Button>
       <Button variant="contained">취소</Button>
     </Box>
   );
