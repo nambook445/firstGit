@@ -22,6 +22,10 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+
+
 function TablePaginationActions(props) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
@@ -88,18 +92,49 @@ TablePaginationActions.propTypes = {
 export default function CustomPaginationActionsTable() {
   const [state, setState] = React.useState([])
   const [hasError, setHasError] = React.useState(false)
+  //Axios 
+  React.useEffect(async () => {
+    await axios.get("http://localhost:8080/api").then(res => setState(res.data.test)).catch(err => setHasError(true)).then(console.log())}, []);
+    
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const rows = state;
+
   //Accordion component
   const [expanded, setExpanded] = React.useState(false);
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-  //Axios 
-  React.useEffect(async () => {
-    await axios.get("http://localhost:8080/api").then(res => setState(res.data.test)).catch(err => setHasError(true))}, []);
-    
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    const rows = state;
+  // condition 조건 렌더링시 작동안하는데 이유를 당최 모르겠네
+  // const [updateMode, setUpdateMode] = React.useState(false)
+  // const toggle = () => setUpdateMode(!updateMode)
+  // React.useEffect(()=>{
+  //   console.log(updateMode);
+  // },[updateMode]);
+  // const renderUpdataMode = updateMode
+  // ?
+  // <TextField
+  //   id="outlined-multiline-static"
+  //   name="description"
+  //   label="수정"
+  //   multiline
+  //   rows={10}
+  //   margin="normal"
+  //   defaultValue={state.description} 
+  //   sx={{width: '100%'}}
+  // />
+  // :
+  // <TextField
+  //   id="outlined-multiline-static"
+  //   name="description"
+  //   label="본문"
+  //   multiline
+  //   rows={10}
+  //   margin="normal"
+  //   color="success"
+  //   value={state.description} 
+  //   sx={{width: '100%'}}
+  // />
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -113,16 +148,48 @@ export default function CustomPaginationActionsTable() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
+  const [title, setTitle] = React.useState([]);
+  const [description, setDescription] = React.useState([]);
+  const [id, setId] = React.useState([]);
+  
+  const handleSubmit = (e) => {
+    console.log(e)
+    e.preventDefault();
+    setId(Number(e.target.id))
+    let data ={
+      id: id,
+      title: e.target.title.value,
+      description: description
+    };
+    axios.put("http://localhost:8080/api", JSON.stringify(data), {
+      headers: {
+        "Content-Type": `application/json`
+      }
+    }
+  ).then(res => console.log(data)).catch(err => setHasError(true))}
+  
+  // const handelSubmit = (e) => {
+  //   let data = {
+  //     id: state.id,
+  //     title: title,
+  //     description: description
+  //   }
+  //   e.preventDefault();
+  //   axios.put("http://localhost:8080/api", JSON.stringify(data), {
+  //     headers: {
+  //       "Content-Type": `application/json`
+  //     }}).then(res => setState(res.data.test)).catch(err => setHasError(true)),[]};
+  
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableBody>
+        <TableRow>
           {(rowsPerPage > 0
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((state) => (
-            <Accordion expanded={expanded === state.id} onChange={handleChange(state.id)}>
+            <Accordion key={state.id} expanded={expanded === state.id} onChange={handleChange(state.id)}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1bh-content"
@@ -139,12 +206,39 @@ export default function CustomPaginationActionsTable() {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography>
-                  {state.description}
-                </Typography>
+                <form id={state.id} onSubmit={handleSubmit}>
+                  <TextField 
+                  id="outlined-basic" 
+                  label="제목" 
+                  name="title" 
+                  defaultValue={state.title} 
+                  onChange={(e) => {
+                    setTitle(e.target.value)}} 
+                  variant="outlined" 
+                  margin="normal" 
+                  sx={{width: '100%'}} />               
+                  <TextField
+                    id="outlined-multiline-static"
+                    name="description"
+                    label="본문"
+                    multiline
+                    rows={10}
+                    margin="normal"
+                    color="success"
+                    defaultValue={state.description}
+                    onChange={(e)=>{
+                      console.log(e);
+                      setDescription(e.target.value);
+                    }}
+                    sx={{width: '100%'}}
+                  />
+                  <Button type="submit" color="success">수정</Button>
+                  <Button color="error">삭제</Button>
+                </form>
               </AccordionDetails>
             </Accordion>
           ))}
+          </TableRow>
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
               <TableCell colSpan={6} />
@@ -152,25 +246,25 @@ export default function CustomPaginationActionsTable() {
           )}
         </TableBody>
         <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-              colSpan={3}
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              SelectProps={{
-                inputProps: {
-                  'aria-label': 'rows per page',
-                },
-                native: true,
-              }}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-            />
-          </TableRow>
-        </TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                colSpan={3}
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: {
+                    'aria-label': 'rows per page',
+                  },
+                  native: true,
+                }}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
+            </TableRow>
+          </TableFooter>
       </Table>
     </TableContainer>
   );

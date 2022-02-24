@@ -11,11 +11,19 @@ router.get('/', (req, res)=>{
 });
 
 router.post('/', (req, res)=>{
-  const sql = `INSERT INTO topic (title, description, created) VALUES(?, ?, NOW())`
-  db.query(sql, [req.body.title, req.body.description], (err, results)=>{
+  const sql = `INSERT INTO topic (title, description, created, user_id) VALUES(?, ?, NOW(), ?)`
+  db.query(sql, [req.body.title, req.body.description, req.body.user_id], (err, results)=>{
     res.send('ok');
   });
 })
+
+router.put('/', (req, res)=>{
+  const sql = `UPDATE topic SET title=?, description=? WHERE id=?`;
+  db.query(sql, [req.body.title, req.body.description, req.body.id], (err, results) =>{
+
+    res.send('ok')
+  })
+});
 
 
 module.exports = router;

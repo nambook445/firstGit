@@ -20,7 +20,8 @@ export default function SimplePaper() {
         e.preventDefault();
         let data ={
           title: title,
-          description: description
+          description: description,
+          user_id: 1
         };
         axios.post("http://localhost:8080/api", JSON.stringify(data), {
           headers: {
@@ -29,7 +30,7 @@ export default function SimplePaper() {
         }
       ).then(res => console.log(res)).catch(err => setHasError(true))}
     
-      
+     
       return (
     <form onSubmit={onSubmit}>
       <Paper elevation={3} 
