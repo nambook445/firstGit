@@ -106,36 +106,6 @@ export default function CustomPaginationActionsTable() {
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-  // condition 조건 렌더링시 작동안하는데 이유를 당최 모르겠네
-  // const [updateMode, setUpdateMode] = React.useState(false)
-  // const toggle = () => setUpdateMode(!updateMode)
-  // React.useEffect(()=>{
-  //   console.log(updateMode);
-  // },[updateMode]);
-  // const renderUpdataMode = updateMode
-  // ?
-  // <TextField
-  //   id="outlined-multiline-static"
-  //   name="description"
-  //   label="수정"
-  //   multiline
-  //   rows={10}
-  //   margin="normal"
-  //   defaultValue={state.description} 
-  //   sx={{width: '100%'}}
-  // />
-  // :
-  // <TextField
-  //   id="outlined-multiline-static"
-  //   name="description"
-  //   label="본문"
-  //   multiline
-  //   rows={10}
-  //   margin="normal"
-  //   color="success"
-  //   value={state.description} 
-  //   sx={{width: '100%'}}
-  // />
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -151,8 +121,7 @@ export default function CustomPaginationActionsTable() {
   };
   const [title, setTitle] = React.useState([]);
   const [description, setDescription] = React.useState([]);
-  const [id, setId] = React.useState([]);
-  
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     let data ={
@@ -167,18 +136,21 @@ export default function CustomPaginationActionsTable() {
     }
   ).then(res => console.log(res)).catch(err => setHasError(true))}
   
-  // const handelSubmit = (e) => {
-  //   let data = {
-  //     id: state.id,
-  //     title: title,
-  //     description: description
-  //   }
-  //   e.preventDefault();
-  //   axios.put("http://localhost:8080/api", JSON.stringify(data), {
-  //     headers: {
-  //       "Content-Type": `application/json`
-  //     }}).then(res => setState(res.data.test)).catch(err => setHasError(true)),[]};
-  
+  const handlingDelete = (e)=>{
+    axios.delete("http://localhost:8080/api", {
+      headers: {
+      "Content-Type": `application/json`
+      },
+      data: {
+        id: Number(e.target.form.id)
+      }
+    }).then(res => console.log(res)).catch(err => setHasError(true))
+  }
+
+
+    
+
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
@@ -239,7 +211,7 @@ export default function CustomPaginationActionsTable() {
                     sx={{width: '100%'}}
                   />
                   <Button type="submit" color="success">수정</Button>
-                  <Button color="error">삭제</Button>
+                  <Button onClick={handlingDelete} color="error">삭제</Button>
                 </form>
      
               </AccordionDetails>

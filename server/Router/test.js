@@ -25,5 +25,15 @@ router.put('/', (req, res)=>{
   })
 });
 
+router.delete('/', (req, res)=>{
+  console.log(req.body)
+  db.query(`DELETE FROM topic WHERE id = ?`, [req.body.id], (err, results)=>{
+    if(err){
+      throw err;}
+    res.send('ok')
+  })
+}
+)
+
 
 module.exports = router;
