@@ -9,6 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import TableHead from '@mui/material/TableHead';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
@@ -153,20 +154,18 @@ export default function CustomPaginationActionsTable() {
   const [id, setId] = React.useState([]);
   
   const handleSubmit = (e) => {
-    console.log(e)
     e.preventDefault();
-    setId(Number(e.target.id))
     let data ={
-      id: id,
+      id: Number(e.target.id),
       title: e.target.title.value,
-      description: description
+      description: e.target[2].value
     };
     axios.put("http://localhost:8080/api", JSON.stringify(data), {
       headers: {
         "Content-Type": `application/json`
       }
     }
-  ).then(res => console.log(data)).catch(err => setHasError(true))}
+  ).then(res => console.log(res)).catch(err => setHasError(true))}
   
   // const handelSubmit = (e) => {
   //   let data = {
@@ -183,8 +182,14 @@ export default function CustomPaginationActionsTable() {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+      <TableHead>
+          <TableRow>
+            <TableCell>Dessert (100g serving)</TableCell>
+          </TableRow>
+        </TableHead>
         <TableBody>
-        <TableRow>
+        <TableRow >
+          <TableCell sx={{padding:0}}>
           {(rowsPerPage > 0
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
@@ -206,38 +211,41 @@ export default function CustomPaginationActionsTable() {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
+
                 <form id={state.id} onSubmit={handleSubmit}>
                   <TextField 
                   id="outlined-basic" 
-                  label="제목" 
                   name="title" 
+                  label="제목" 
                   defaultValue={state.title} 
                   onChange={(e) => {
                     setTitle(e.target.value)}} 
                   variant="outlined" 
                   margin="normal" 
+                  color="success"
                   sx={{width: '100%'}} />               
                   <TextField
                     id="outlined-multiline-static"
-                    name="description"
+                    name="desc"
                     label="본문"
+                    defaultValue={state.description}
+                    onChange={(e)=>{
+                      setDescription(e.target.value);
+                    }}
                     multiline
                     rows={10}
                     margin="normal"
                     color="success"
-                    defaultValue={state.description}
-                    onChange={(e)=>{
-                      console.log(e);
-                      setDescription(e.target.value);
-                    }}
                     sx={{width: '100%'}}
                   />
                   <Button type="submit" color="success">수정</Button>
                   <Button color="error">삭제</Button>
                 </form>
+     
               </AccordionDetails>
             </Accordion>
           ))}
+          </TableCell>
           </TableRow>
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
