@@ -19,8 +19,10 @@ const saltRounds = 10;
 const cors = require('cors');
 const test = require('./Router/test');
 
-
-app.use(cors())
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 app.set('view engine', 'pug');
 app.set('views', './views');
 app.locals.pretty = true;
@@ -30,7 +32,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser())
 app.use(session({
-	key: 'connect.sid',
+	key: 'connect.mysql.sid',
 	secret: 'fadasdfh#$^&jk252353',
 	store: sessionStore,
 	resave: false,
@@ -40,13 +42,16 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  console.log(user)
+  
+  done(null, user.username);
 });
 passport.deserializeUser(function(id, done) {
   db.query(`SELECT * FROM users WHERE username=?`,[id], (err, results)=>{
     if(err){
       done(null, false)
     } else {
+      console.log(results[0])
       done(null, id);
     }
     })
@@ -181,13 +186,17 @@ app.post('/delete', (req, res)=>{
   }
 )
 
-app.post('/login',
-	passport.authenticate('local', 
-		{successRedirect: '/',
-		failureRedirect: '/login',
-		failureFlash: true 
-	})
-);
+app.post('/login', function (req, res, next) {
+  passport.authenticate('local', function (err, user, info) {
+    if (err) return next(err)
+    if (!user) return res.status(404).json(info)
+
+    req.logIn(user, function (err) {
+      if (err) return next(err)
+      return res.json({ user: req.user })
+    })
+  })(req, res, next)
+})
 
 app.post('/resist', (req, res)=>{
   bcrypt.genSalt(saltRounds, (err, salt)=>{

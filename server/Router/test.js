@@ -26,8 +26,8 @@ router.put('/', (req, res)=>{
 });
 
 router.delete('/', (req, res)=>{
-  console.log(req.body)
-  db.query(`DELETE FROM topic WHERE id = ?`, [req.body.id], (err, results)=>{
+  const sql = `DELETE FROM topic WHERE id = ?`
+  db.query(sql, [req.body.id], (err, results)=>{
     if(err){
       throw err;}
     res.send('ok')

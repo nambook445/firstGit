@@ -5,7 +5,6 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import axios from 'axios';
 
-import { useForm } from "react-hook-form";
 
 
 
@@ -51,12 +50,12 @@ export default function SimplePaper() {
           justifyContent:'flex-start',
           flexGrow: 3
           }}>
-          <TextField id="outlined-basic" label="Outlined" name="title" value={title} onChange={(e) => {setTitle(e.target.value)}} variant="outlined" margin="normal" sx={{width: '100%'}} />
+          <TextField id="outlined-basic" label="제목" name="title" value={title} onChange={(e) => {setTitle(e.target.value)}} variant="outlined" margin="normal" sx={{width: '100%'}} />
 
           <TextField
             id="outlined-multiline-static"
             name="description"
-            label="Multiline"
+            label="본문"
             multiline
             rows={20}
             margin="normal"

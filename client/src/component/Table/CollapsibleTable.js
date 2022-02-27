@@ -156,7 +156,19 @@ export default function CustomPaginationActionsTable() {
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
       <TableHead>
           <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
+            <TableCell>
+              <Box sx={
+              {
+                display:'flex',
+                position: 'relative',
+                padding:0,
+                borderSize:'border-box'
+              }}>
+                <div>제목</div>
+                <div>시간</div>
+                <div>닉네임</div>
+              </Box>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
