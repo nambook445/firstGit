@@ -16,49 +16,6 @@ import axios from 'axios';
 
 import BasicModal from './src/BasicModal';
 
-// import Swal from 'sweetalert2'
-// import withReactContent from 'sweetalert2-react-content'
-
-
-// const MySwal = withReactContent(Swal)
-// const toggle = ()=>{
-//   MySwal.fire({
-//     title: 'Multiple inputs',
-//     didOpen: () => {
-//       // `MySwal` is a subclass of `Swal`
-//       //   with all the same instance & static methods
-//       MySwal.clickConfirm(axios.post("http://localhost:8080/login",JSON.stringify("abc"),{
-//         header:{
-//         "Content-Type": `application/json`
-//       }
-//     }))
-//     }
-//     }).then(() => {
-//     return MySwal.fire({
-//       html:
-//       '<input id="swal-input1" class="swal2-input">' +
-//       '<input id="swal-input2" class="swal2-input">',
-//     focusConfirm: false,
-//     preConfirm: () => {
-//       return [
-//         document.getElementById('swal-input1').value,
-//         document.getElementById('swal-input2').value
-//       ]}
-//     })
-//   })
-// }
-
-// const toggle = async ()=>{
-//   await MySwal.fire({
-//     title: 'Input email address',
-//     input: 'email',
-//     inputLabel: 'Your email address',
-//     inputPlaceholder: 'Enter your email address'
-//   })
-// }
-
-
-
 
 
 
@@ -169,7 +126,8 @@ const Nav = () => {
             </Link>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            <BasicModal/>
+          {/* 로그인모달 */}
+            <BasicModal/> 
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />

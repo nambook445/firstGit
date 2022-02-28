@@ -5,7 +5,11 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import axios from 'axios';
 
+//sweetalert2
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
+const MySwal = withReactContent(Swal)
 
 
 
@@ -13,22 +17,42 @@ export default function SimplePaper() {
   const [hasError, setHasError] = React.useState(false)
   const [title, setTitle] = React.useState([]);
   const [description, setDescription] = React.useState([]);
-
-
+    
       const onSubmit = (e) => {
         e.preventDefault();
-        let data ={
-          title: title,
-          description: description,
-          user_id: 1
-        };
-        axios.post("http://localhost:8080/api", JSON.stringify(data), {
-          headers: {
-            "Content-Type": `application/json`
+        MySwal.fire({
+          title: <p>작성하시겠습니까?</p>,
+          showDenyButton: true,
+          confirmButtonColor:'#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '수정',
+          denyButtonText: '취소',
+          footer: 'Copyright 2018',
+        }).then((result) => {
+          if(result.isConfirmed){
+            let data ={
+              title: title,
+              description: description,
+              user_id: 1
+            };
+            axios.post("http://localhost:8080/api", JSON.stringify(data), {
+              headers: {
+                "Content-Type": `application/json`
+              },
+              withCredentials: true
+            }
+          ).then(res=>console.log(res)).then(Swal.fire({
+            position: 'absolute',
+            icon: 'success',
+            title: '작성완료',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          ).catch(err => setHasError(true))
           }
-        }
-      ).then(res => console.log(res)).catch(err => setHasError(true))}
-    
+        })
+
+      }
      
       return (
     <form onSubmit={onSubmit}>
@@ -67,7 +91,7 @@ export default function SimplePaper() {
             display: 'flex',
             justifyContent:'center'
             }}>
-            <Button type="submit" variant="contained">확인</Button>
+            <Button type="submit" variant="contained">작성</Button>
           </Box>
         </Box>
       </Paper>

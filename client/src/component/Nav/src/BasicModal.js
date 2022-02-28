@@ -41,6 +41,7 @@ const style = {
 
 export default function BasicModal() {
   const [open, setOpen] = React.useState(false);
+  const [loginStatus, setLoginStatus] = React.useState(false)
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleSubmit = (e) =>{
@@ -51,7 +52,7 @@ export default function BasicModal() {
     }
     axios.post("http://localhost:8080/login",data,{
       withCredentials: true
-    }).then(res => {
+    }).then(res => console.log(res)).then(res => {
         MySwal.fire({
         icon: 'success',
         title: 'Your work has been saved',
@@ -60,20 +61,51 @@ export default function BasicModal() {
         didClose:handleClose(),
         position: 'absolute',
         zIndex:9999
-        })
+        }).then(setLoginStatus(true)).then(console.log(loginStatus))
     }).catch(err => 
       {MySwal.fire({
         icon: 'error',
         title: JSON.stringify(err.response.data.message),
-        // didClose:handleClose(),
         position: 'absolute',
-        zIndex:9999
+        zIndex:9999,
+        footer: '<a href="/resister">회원가입</a>'
       })
     })
   }
+  // React.useEffect(()=>{
+  //   console.log(loginStatus)
+  // },[loginStatus])
+
+
+  function LoginButton(){
+    return (<Button onClick={handleOpen} sx={{color:'white'}}>LOGIN</Button>);
+  }
+  function LogoutButton(){
+    return (<Button onClick={handleOpen} sx={{color:'white'}}>LOGOUT</Button>);
+  }
+
+//   const LoginStat = React.useEffect(() => {
+//    console.log(loginStatus)
+//     if(!loginStatus){
+//       return <Button onClick={handleOpen} sx={{color:'white'}} value="LOGIN" />
+//     }else{
+//       return <Button onClick={handleOpen} sx={{color:'white'}} value="LOGOUT" />
+//     }
+//  }, [loginStatus])
+  function LoginStat(props){
+    if(!props.loginStatus){
+      return <LoginButton/>
+    }else{
+      return <LogoutButton/>
+    }
+  }
+ 
+
+  
+
   return (
     <span>
-      <Button onClick={handleOpen} sx={{color:'white'}}>Open modal</Button>
+      <LoginStat loginStatus={loginStatus} />
       <Modal
         open={open}
         onClose={handleClose}

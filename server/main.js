@@ -42,8 +42,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function(user, done) {
-  console.log(user)
-  
   done(null, user.username);
 });
 passport.deserializeUser(function(id, done) {
@@ -51,7 +49,7 @@ passport.deserializeUser(function(id, done) {
     if(err){
       done(null, false)
     } else {
-      console.log(results[0])
+      console.log(id)
       done(null, id);
     }
     })
@@ -91,9 +89,6 @@ app.get('/board/:pageId', (req, res)=>{
   if(isNaN(req.params.pageId)||req.params.pageId<=0){
     res.redirect('/board/1');
   } 
-  // }if(req.params.pageId>totalPage){
-  //   res.redirect(`/board/${totalPage}`)
-  // } 모듈화 이후에 고치면 될듯
     db.query('SELECT * FROM topic',	(err, results)=>{
       var currentPage = parseInt(req.params.pageId);
       var limit = 10;
@@ -190,10 +185,11 @@ app.post('/login', function (req, res, next) {
   passport.authenticate('local', function (err, user, info) {
     if (err) return next(err)
     if (!user) return res.status(404).json(info)
-
     req.logIn(user, function (err) {
       if (err) return next(err)
-      return res.json({ user: req.user })
+      return res.json({
+        user: req.user
+       })
     })
   })(req, res, next)
 })

@@ -26,6 +26,15 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
+//sweetalert2
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+const MySwal = withReactContent(Swal)
+
+
+//새로고침을 위한 
+// const url = HttpContext.Current.Request.Url.AbsoluteUri;
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -95,7 +104,7 @@ export default function CustomPaginationActionsTable() {
   const [hasError, setHasError] = React.useState(false)
   //Axios 
   React.useEffect(async () => {
-    await axios.get("http://localhost:8080/api").then(res => setState(res.data.test)).catch(err => setHasError(true)).then(console.log())}, []);
+    await axios.get("http://localhost:8080/api").then(res => setState(res.data.test)).catch(err => setHasError(true))}, []);
     
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -121,34 +130,77 @@ export default function CustomPaginationActionsTable() {
   };
   const [title, setTitle] = React.useState([]);
   const [description, setDescription] = React.useState([]);
- 
+
+
+//수정버튼
   const handleSubmit = (e) => {
     e.preventDefault();
-    let data ={
-      id: Number(e.target.id),
-      title: e.target.title.value,
-      description: e.target[2].value
-    };
-    axios.put("http://localhost:8080/api", JSON.stringify(data), {
-      headers: {
-        "Content-Type": `application/json`
-      }
-    }
-  ).then(res => console.log(res)).catch(err => setHasError(true))}
-  
-  const handlingDelete = (e)=>{
-    axios.delete("http://localhost:8080/api", {
-      headers: {
-      "Content-Type": `application/json`
-      },
-      data: {
-        id: Number(e.target.form.id)
-      }
-    }).then(res => console.log(res)).catch(err => setHasError(true))
+    MySwal.fire({
+      title: <p>수정하시겠습니까?</p>,
+      showDenyButton: true,
+      confirmButtonColor:'#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '수정',
+      denyButtonText: '취소',
+      footer: 'Copyright 2018',
+    }).then((result) => {
+      if(result.isConfirmed){
+        let data ={
+          id: Number(e.target.id),
+          title: e.target.title.value,
+          description: e.target[2].value
+        };
+        axios.put("http://localhost:8080/api", JSON.stringify(data), {
+          headers: {
+            "Content-Type": `application/json`
+          },
+          withCredentials: true
+        }
+      ).then(Swal.fire({
+        position: 'absolute',
+        icon: 'success',
+        title: '수정완료',
+        showConfirmButton: false,
+        timer: 1500
+      }).then((value) => { window.location= `http://localhost:3000/board`})).catch(err => setHasError(true))}
+    })
   }
 
+  //삭제버튼
+  const handleDelete = (e) => {
+    e.preventDefault()
+    MySwal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showDenyButton: true,
+      confirmButtonColor:'#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '삭제',
+      denyButtonText: '취소',
+      reverseButtons: true
+    }).then((result) => {
+      if(result.isConfirmed){
+        axios.delete("http://localhost:8080/api", {
+          headers: {
+          "Content-Type": `application/json`
+          },
+          withCredentials: true,
+          data: {
+            id: Number(e.target.form.id)
+          }
+        }).then(Swal.fire({
+          position: 'absolute',
+          icon: 'success',
+          title: '삭제완료',
+          showConfirmButton: false,
+          timer: 1500
+        }).then((value) => { window.location= `http://localhost:3000/board`})).catch(err => setHasError(true))
+      }
+    }
+    )
 
-    
+  }
 
 
   return (
@@ -223,7 +275,7 @@ export default function CustomPaginationActionsTable() {
                     sx={{width: '100%'}}
                   />
                   <Button type="submit" color="success">수정</Button>
-                  <Button onClick={handlingDelete} color="error">삭제</Button>
+                  <Button onClick={handleDelete} color="error">삭제</Button>
                 </form>
      
               </AccordionDetails>
