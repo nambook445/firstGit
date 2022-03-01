@@ -33,9 +33,6 @@ import withReactContent from 'sweetalert2-react-content'
 const MySwal = withReactContent(Swal)
 
 
-//새로고침을 위한 
-// const url = HttpContext.Current.Request.Url.AbsoluteUri;
-
 function TablePaginationActions(props) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
@@ -106,15 +103,16 @@ export default function CustomPaginationActionsTable() {
   React.useEffect(async () => {
     await axios.get("http://localhost:8080/api").then(res => setState(res.data.test)).catch(err => setHasError(true))}, []);
     
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    const rows = state;
-
   //Accordion component
   const [expanded, setExpanded] = React.useState(false);
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+
+  //pagenation  
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const rows = state;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -130,7 +128,6 @@ export default function CustomPaginationActionsTable() {
   };
   const [title, setTitle] = React.useState([]);
   const [description, setDescription] = React.useState([]);
-
 
 //수정버튼
   const handleSubmit = (e) => {

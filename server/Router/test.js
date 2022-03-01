@@ -12,7 +12,6 @@ router.get('/', (req, res)=>{
 });
 
 router.post('/', (req, res)=>{
-  console.log(req.user)
   const sql = `INSERT INTO topic (title, description, created, user_id) VALUES(?, ?, NOW(), ?)`
   db.query(sql, [req.body.title, req.body.description, req.body.user_id], (err, results)=>{
     res.send('ok');
@@ -28,7 +27,6 @@ router.put('/', (req, res)=>{
 });
 
 router.delete('/', (req, res)=>{
-  console.log(req.user)
   const sql = `DELETE FROM topic WHERE id = ?`
   db.query(sql, [req.body.id], (err, results)=>{
     if(err){

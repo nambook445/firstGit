@@ -9,9 +9,8 @@ import { Box } from '@mui/system';
 
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+
 const MySwal = withReactContent(Swal)
-
-
 const style = {
   position: 'absolute',
   top: '50%',
@@ -26,12 +25,9 @@ const style = {
   zIndex: 1
 }
 
-
 export default function BasicModal(props) {
   const [open, setOpen] = React.useState(false);
-
   const isLogin = props.isLogin;
-
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleSubmit = async (e) =>{
@@ -62,30 +58,19 @@ export default function BasicModal(props) {
       })
     })
   }
-  // React.useEffect(()=>{
-  //   console.log(loginStatus)
-  // },[loginStatus])
-
-
-  function LoginButton(){
-    return (<Button onClick={handleOpen} sx={{color:'white'}}>LOGIN</Button>);
-  }
-  function LogoutButton(){
-    return (<Button onClick={onLogout} sx={{color:'white'}}>LOGOUT</Button>);
-  }
 
   async function onLogout(){
     sessionStorage.removeItem('user');
     document.location = '/';
     await axios.get('http://localhost:8080/logout',{ withCredentials : true }).then(res => console.log(res)).catch(err => console.log(err.response))
   }
-
-  // axios.get('http://localhost:8080/logout').
-  //   then(res => console.log(res)
-  //   .then(sessionStorage.removeItem('user'))
-  //   .then(document.location = '/')
-  //   ).catch(err => console.log(err.response))
-
+  
+  function LoginButton(){
+    return (<Button onClick={handleOpen} sx={{color:'white'}}>LOGIN</Button>);
+  }
+  function LogoutButton(){
+    return (<Button onClick={onLogout} sx={{color:'white'}}>LOGOUT</Button>);
+  }
   function LoginStat(props){
     if(!props.isLogin){
       return <LoginButton />
@@ -93,9 +78,6 @@ export default function BasicModal(props) {
       return <LogoutButton />
     }
   }
- 
-
-  
 
   return (
     <span>
@@ -115,8 +97,7 @@ export default function BasicModal(props) {
             required
             id="outlined-required"
             label="ID"
-            sx={{mb:'1rem',
-          }}
+            sx={{mb:'1rem'}}
           />
           <TextField
             onChange={e=>e.target.value}
@@ -125,8 +106,7 @@ export default function BasicModal(props) {
             label="Password"
             type="password"
             autoComplete="current-password"
-            sx={{mb:'1rem',
-          }}
+            sx={{mb:'1rem'}}
           />
           <div>
             <Button type="submit"sx={{position:'relative'}}>LOGIN</Button>

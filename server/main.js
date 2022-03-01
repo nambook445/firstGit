@@ -49,7 +49,6 @@ passport.deserializeUser(function(id, done) {
     if(err){
       done(null, false)
     } else {
-      // console.log(id)
       done(null, id);
     }
     })
