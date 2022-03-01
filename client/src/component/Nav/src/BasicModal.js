@@ -26,33 +26,23 @@ const style = {
   zIndex: 1
 }
 
-// .my-swal {
-//   position: absolute;
-//   z-index: 99999!important;
-// }
 
-// .then(res => {Swal.fire({
-//   icon: 'success',
-//   title: 'Your work has been saved',
-//   showConfirmButton: false,
-//   timer: 1500
-// })})
-
-
-export default function BasicModal() {
+export default function BasicModal(props) {
   const [open, setOpen] = React.useState(false);
-  const [loginStatus, setLoginStatus] = React.useState(false)
+
+  const isLogin = props.isLogin;
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const handleSubmit = (e) =>{
+  const handleSubmit = async (e) =>{
     e.preventDefault();
     const data = {
       username: e.target[0].value,
       password: e.target[2].value
     }
-    axios.post("http://localhost:8080/login",data,{
+    await axios.post("http://localhost:8080/login",data,{
       withCredentials: true
-    }).then(res => console.log(res)).then(res => {
+    }).then(res => sessionStorage.setItem('user', res.data.user.username )).then(res => {
         MySwal.fire({
         icon: 'success',
         title: 'Your work has been saved',
@@ -61,7 +51,7 @@ export default function BasicModal() {
         didClose:handleClose(),
         position: 'absolute',
         zIndex:9999
-        }).then(setLoginStatus(true)).then(console.log(loginStatus))
+        }).then(document.location = '/')
     }).catch(err => 
       {MySwal.fire({
         icon: 'error',
@@ -81,22 +71,26 @@ export default function BasicModal() {
     return (<Button onClick={handleOpen} sx={{color:'white'}}>LOGIN</Button>);
   }
   function LogoutButton(){
-    return (<Button onClick={handleOpen} sx={{color:'white'}}>LOGOUT</Button>);
+    return (<Button onClick={onLogout} sx={{color:'white'}}>LOGOUT</Button>);
   }
 
-//   const LoginStat = React.useEffect(() => {
-//    console.log(loginStatus)
-//     if(!loginStatus){
-//       return <Button onClick={handleOpen} sx={{color:'white'}} value="LOGIN" />
-//     }else{
-//       return <Button onClick={handleOpen} sx={{color:'white'}} value="LOGOUT" />
-//     }
-//  }, [loginStatus])
+  async function onLogout(){
+    sessionStorage.removeItem('user');
+    document.location = '/';
+    await axios.get('http://localhost:8080/logout',{ withCredentials : true }).then(res => console.log(res)).catch(err => console.log(err.response))
+  }
+
+  // axios.get('http://localhost:8080/logout').
+  //   then(res => console.log(res)
+  //   .then(sessionStorage.removeItem('user'))
+  //   .then(document.location = '/')
+  //   ).catch(err => console.log(err.response))
+
   function LoginStat(props){
-    if(!props.loginStatus){
-      return <LoginButton/>
+    if(!props.isLogin){
+      return <LoginButton />
     }else{
-      return <LogoutButton/>
+      return <LogoutButton />
     }
   }
  
@@ -105,7 +99,7 @@ export default function BasicModal() {
 
   return (
     <span>
-      <LoginStat loginStatus={loginStatus} />
+      <LoginStat isLogin={isLogin} />
       <Modal
         open={open}
         onClose={handleClose}

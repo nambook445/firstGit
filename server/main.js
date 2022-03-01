@@ -49,7 +49,7 @@ passport.deserializeUser(function(id, done) {
     if(err){
       done(null, false)
     } else {
-      console.log(id)
+      // console.log(id)
       done(null, id);
     }
     })
@@ -146,8 +146,11 @@ app.get('/login', (req, res)=>{
 })
 
 app.get('/logout', (req, res) =>{
-  req.logOut();
-  req.session.save(()=>{res.redirect('/')})
+  req.logout()
+  req.session.destroy(() => {
+    res.clearCookie('connect.mysql.sid');
+});
+  
 })
 
 app.get('/resist', (req, res)=>{

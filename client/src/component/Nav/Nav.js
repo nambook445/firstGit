@@ -22,9 +22,10 @@ import BasicModal from './src/BasicModal';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-const Nav = () => {
+const Nav = (props) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const isLogin = props.isLogin;
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.target);
@@ -127,7 +128,7 @@ const Nav = () => {
           </Box>
           <Box sx={{ flexGrow: 0 }}>
           {/* 로그인모달 */}
-            <BasicModal/> 
+            <BasicModal isLogin={isLogin} /> 
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />

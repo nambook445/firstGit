@@ -47,7 +47,7 @@ export default function SimplePaper() {
             title: '작성완료',
             showConfirmButton: false,
             timer: 1500
-          })
+          }).then(document.location = `/board`)
           ).catch(err => setHasError(true))
           }
         })

@@ -143,14 +143,14 @@ export default function CustomPaginationActionsTable() {
       confirmButtonText: '수정',
       denyButtonText: '취소',
       footer: 'Copyright 2018',
-    }).then((result) => {
+    }).then(async (result) => {
       if(result.isConfirmed){
         let data ={
           id: Number(e.target.id),
           title: e.target.title.value,
           description: e.target[2].value
         };
-        axios.put("http://localhost:8080/api", JSON.stringify(data), {
+        await axios.put("http://localhost:8080/api", JSON.stringify(data), {
           headers: {
             "Content-Type": `application/json`
           },
@@ -162,7 +162,7 @@ export default function CustomPaginationActionsTable() {
         title: '수정완료',
         showConfirmButton: false,
         timer: 1500
-      }).then((value) => { window.location= `http://localhost:3000/board`})).catch(err => setHasError(true))}
+      }).then((value) => { document.location = `/board`})).catch(err => setHasError(true))}
     })
   }
 
@@ -179,9 +179,9 @@ export default function CustomPaginationActionsTable() {
       confirmButtonText: '삭제',
       denyButtonText: '취소',
       reverseButtons: true
-    }).then((result) => {
+    }).then(async (result) => {
       if(result.isConfirmed){
-        axios.delete("http://localhost:8080/api", {
+        await axios.delete("http://localhost:8080/api", {
           headers: {
           "Content-Type": `application/json`
           },
@@ -195,7 +195,7 @@ export default function CustomPaginationActionsTable() {
           title: '삭제완료',
           showConfirmButton: false,
           timer: 1500
-        }).then((value) => { window.location= `http://localhost:3000/board`})).catch(err => setHasError(true))
+        }).then((value) => { document.location= `/board`})).catch(err => setHasError(true))
       }
     }
     )
