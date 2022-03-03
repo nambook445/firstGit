@@ -19,6 +19,7 @@ const saltRounds = 10;
 const cors = require('cors');
 const test = require('./Router/test');
 
+app.use(express.json());
 app.use(cors({
   origin: true,
   credentials: true
@@ -29,7 +30,6 @@ app.locals.pretty = true;
 app.use(flash());
 app.use(express.static('public'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser())
 app.use(session({
 	key: 'connect.mysql.sid',
@@ -183,8 +183,8 @@ app.post('/delete', (req, res)=>{
   }
 )
 
-app.post('/login', function (req, res, next) {
-  passport.authenticate('local', function (err, user, info) {
+app.post('/login', async function (req, res, next) {
+  await passport.authenticate('local', function (err, user, info) {
     if (err) return next(err)
     if (!user) return res.status(404).json(info)
     req.logIn(user, function (err) {
