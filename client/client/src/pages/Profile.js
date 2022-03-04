@@ -6,8 +6,7 @@ import { Box, Card, Link, Container, Typography } from '@mui/material';
 import AuthLayout from '../layouts/AuthLayout';
 // components
 import Page from '../components/Page';
-import { RegisterForm } from '../sections/authentication/register';
-
+import { Profile } from '../sections/authentication/profile';
 // import AuthSocial from '../sections/authentication/AuthSocial'; <AuthSocial /> Oauth용
 
 // ----------------------------------------------------------------------
@@ -39,7 +38,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function Register() {
+export default function Profile() {
   return (
     <RootStyle title="Register | Minimal-UI">
       <AuthLayout>

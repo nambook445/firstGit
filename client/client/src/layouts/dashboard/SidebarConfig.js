@@ -30,6 +30,11 @@ const sidebarConfig = [
     title: 'register',
     path: '/register',
     icon: getIcon('eva:person-add-fill')
+  },
+  {
+    title: 'profile',
+    path: '/profile',
+    icon: getIcon('eva:people-fill')
   }
   // 404 페이지
   // ,
