@@ -196,19 +196,23 @@ app.post('/login', async function (req, res, next) {
   })(req, res, next)
 })
 
-app.post('/resist', (req, res)=>{
+app.post('/resister', (req, res)=>{
+  console.log(req.body);
   bcrypt.genSalt(saltRounds, (err, salt)=>{
     bcrypt.hash(req.body.password, salt, (err, hash)=>{
-      var sql= `INSERT INTO users (username, password, nickname, created) VALUES (?, ?, ?, NOW())`; 
+      const sql= `INSERT INTO users (username, password, nickname, created) VALUES (?, ?, ?, NOW())`; 
       db.query(sql,[req.body.username, hash, req.body.nickname], (err, results)=>{
-        var sql= `SELECT * FROM users WHERE username=?`;
+        const sql= `SELECT * FROM users WHERE username=?`;
         db.query(sql, [req.body.username], (err, results)=>{
           if(err){
             res.sendStatus(500);
           } else {
             var user= results[0];
-            req.login(user, (err)=>{
-              req.session.save(()=>{res.redirect('/');})
+            req.logIn(user, function (err) {
+              if (err) return next(err)
+              return res.json({
+                user: req.user
+               })
             })          
           }
         })
