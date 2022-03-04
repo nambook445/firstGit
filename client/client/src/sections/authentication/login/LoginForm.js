@@ -1,4 +1,4 @@
-import * as Yup from 'yup';
+// import * as Yup from 'yup';
 import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -25,48 +25,45 @@ import Iconify from '../../../components/Iconify';
 export default function LoginForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+// SweetAlert2  
   const MySwal = withReactContent(Swal);
-  // const LoginSchema = Yup.object().shape({
-  //   email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-  //   password: Yup.string().required('Password is required')
-  // });
-
+// formik remember 사용법은 아직...
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
       remember: true
     },
-    // validationSchema: LoginSchema,로그인 유효성 검사 텍스트
     onSubmit: async (value) => {
       const data = {
         username: value.username,
         password: value.password
       };
       await axios.post('http://localhost:8080/login',
-        data, {
+        data, 
+        {
           withCredentials: true
-        })
-        .then((res) => sessionStorage.setItem('user', res.data.user.username))
-        .then(
+        }
+      )
+      .then((res) => sessionStorage.setItem('user', res.data.user.username))
+      .then((res) =>
+        {
           MySwal.fire({
             icon: 'success',
             title: '로그인 성공',
             showConfirmButton: false,
-            timer: 1500,
-            position: 'absolute',
-            zIndex: 9999
+            timer: 1500
           })
-        .then(navigate('/dashboard/app', { replace: true })))
-        .catch((err) =>
-          MySwal.fire({
-            icon: 'error',
-            title: JSON.stringify(err.response.data.message),
-            position: 'absolute',
-            zIndex: 9999,
-            footer: '<a href="/resister">회원가입</a>'
-          })
-        );
+          .then(navigate('/dashboard/app', { replace: true }))
+        }
+      )
+      .catch((err) =>
+        MySwal.fire({
+          icon: 'error',
+          title: JSON.stringify(err.response.data.message),
+          footer: '<a href="/resister">회원가입</a>'
+        })
+      );
     }
   });
 

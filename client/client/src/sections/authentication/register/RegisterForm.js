@@ -2,12 +2,14 @@ import * as Yup from 'yup';
 import { useState } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import { values } from 'lodash';
 // material
 import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // axios
 import axios from 'axios'
+// SweetAlert2
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 // component
 import Iconify from '../../../components/Iconify';
 //----------------------------------------------------------------------
@@ -15,12 +17,25 @@ import Iconify from '../../../components/Iconify';
 export default function RegisterForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  // SweetAlert2  
+  const MySwal = withReactContent(Swal);
 
   const RegisterSchema = Yup.object().shape({
-    username: Yup.string().min(6, 'ID는 6자리 이상이어야 합니다.').max(20, 'Too Long!').required('ID is required'),
-    password: Yup.string().min(6, '비밀번호는 6자리 이상이어야 합니다.').max(20, 'Too Long!').required('Password is required'),
-    passwordCheck: Yup.string().oneOf([Yup.ref('password'), null], '비밀번호가 일치하지 않습니다.').required('Password is required'),
-    nickname: Yup.string().min(2, 'Too Short!').max(15, 'Too Long!').required('NickName is required')
+    username: Yup.string()
+    .min(6, 'ID는 6자리 이상이어야 합니다.')
+    .max(20, '외우기 힘들텐데요!')
+    .required('ID를 입력하세요.'),
+    password: Yup.string()
+    .min(6, '비밀번호는 6자리 이상이어야 합니다.')
+    .max(20, '외우기 힘들텐데요!')
+    .required('비밀번호를 입력하세요.'),
+    passwordCheck: Yup.string()
+    .oneOf([Yup.ref('password'), null], '비밀번호가 일치하지 않습니다.')
+    .required('비밀번호가 일치하지 않습니다.'),
+    nickname: Yup.string()
+    .min(2, '2글자 이상이 필요합니다.')
+    .max(15, '15글자 이하로 입력하세요.')
+    .required('닉네임을 입력하세요.')
   });
 
   const formik = useFormik({
@@ -32,19 +47,36 @@ export default function RegisterForm() {
     },
     validationSchema: RegisterSchema,
     onSubmit: async (value) => {
-      console.log(value);
       const data = {
         username: value.username,
         password: value.password,
         nickname: value.nickname
       };
-      await axios
-        .post('http://localhost:8080/resister', data, {
+      await axios.post('http://localhost:8080/resister', 
+        data, 
+        {
           withCredentials: true
+        }
+      )
+      .then((res) => sessionStorage.setItem('user', res.data.user.username))
+      .then((res) =>
+      {
+        MySwal.fire({
+          icon: 'success',
+          title: `환영합니다. ${res.data.user.nickname}`,
+          showConfirmButton: false,
+          timer: 1500
         })
-        .then((res) => sessionStorage.setItem('user', res.data.user.username))
         .then(navigate('/dashboard/app', { replace: true }))
-        .catch((err) => console.log(err.response));
+      }
+      )
+      .catch((err) =>
+        MySwal.fire({
+          icon: 'error',
+          title: JSON.stringify(err.response.data),
+          footer: '<a href="/resister">회원가입</a>'
+        })
+      );
     }
   });
 
