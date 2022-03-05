@@ -10,7 +10,7 @@
     // import 관련 규칙 모음
 
     "plugin:prettier/recommended",
-    "prettier/react"
+    "prettier"
     // prettier 관련 규칙 모음
   ],
   "parserOptions": {
