@@ -14,7 +14,7 @@ import withReactContent from 'sweetalert2-react-content';
 import Iconify from '../../../components/Iconify';
 //----------------------------------------------------------------------
 
-export default function RegisterForm() {
+export default function ProfileForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   // SweetAlert2

@@ -25,9 +25,9 @@ import Iconify from '../../../components/Iconify';
 export default function LoginForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-// SweetAlert2  
+  // SweetAlert2
   const MySwal = withReactContent(Swal);
-// formik remember 사용법은 아직...
+  // formik remember 사용법은 아직...
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -39,31 +39,26 @@ export default function LoginForm() {
         username: value.username,
         password: value.password
       };
-      await axios.post('http://localhost:8080/login',
-        data, 
-        {
+      await axios
+        .post('http://localhost:8080/login', data, {
           withCredentials: true
-        }
-      )
-      .then((res) => sessionStorage.setItem('user', res.data.user.username))
-      .then((res) =>
-        {
+        })
+        .then((res) => sessionStorage.setItem('user', res.data.user.username))
+        .then((res) => {
           MySwal.fire({
             icon: 'success',
             title: '로그인 성공',
             showConfirmButton: false,
             timer: 1500
-          })
-          .then(navigate('/dashboard/app', { replace: true }))
-        }
-      )
-      .catch((err) =>
-        MySwal.fire({
-          icon: 'error',
-          title: JSON.stringify(err.response.data.message),
-          footer: '<a href="/resister">회원가입</a>'
+          }).then(navigate('/dashboard/app', { replace: true }));
         })
-      );
+        .catch((err) =>
+          MySwal.fire({
+            icon: 'error',
+            title: JSON.stringify(err.response.data.message),
+            footer: '<a href="/resister">회원가입</a>'
+          })
+        );
     }
   });
 

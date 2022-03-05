@@ -105,11 +105,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             </Typography>
           </Box>
 
-          <Button
-            href="http://localhost:8080/"
-            target="_blank"
-            variant="contained"
-          >
+          <Button href="http://localhost:8080/" target="_blank" variant="contained">
             Go To Portfolio
           </Button>
         </Stack>

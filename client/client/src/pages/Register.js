@@ -11,7 +11,6 @@ import { RegisterForm } from '../sections/authentication/register';
 // import AuthSocial from '../sections/authentication/AuthSocial'; <AuthSocial /> Oauth용
 
 // ----------------------------------------------------------------------
-
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'flex'
@@ -62,9 +61,7 @@ export default function Register() {
             <Typography variant="h4" gutterBottom>
               회원가입
             </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>
-              Oauth구현중
-            </Typography>
+            <Typography sx={{ color: 'text.secondary' }}>Oauth구현중</Typography>
           </Box>
 
           <RegisterForm />

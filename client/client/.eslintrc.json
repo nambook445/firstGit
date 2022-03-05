@@ -1,0 +1,25 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "plugin:import/errors",
+    "plugin:import/warnings",
+
+    // import 관련 규칙 모음
+
+    "plugin:prettier/recommended",
+    "prettier/react"
+    // prettier 관련 규칙 모음
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": ["react"],
+  "rules": {}
+}

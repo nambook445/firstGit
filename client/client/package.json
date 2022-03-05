@@ -45,6 +45,7 @@
     "@mui/utils": "^5.4.2",
     "@testing-library/jest-dom": "^5.16.2",
     "apexcharts": "^3.33.1",
+    "axios": "^0.26.0",
     "change-case": "^4.1.2",
     "date-fns": "^2.28.0",
     "formik": "^2.2.9",
@@ -61,28 +62,24 @@
     "react-scripts": "^5.0.0",
     "simplebar": "^5.3.6",
     "simplebar-react": "^2.3.6",
-    "web-vitals": "^2.1.4",
-    "yup": "^0.32.11",
-    "axios": "^0.26.0",
-    "cors": "^2.8.5",
-    "http-proxy-middleware": "^2.0.3",
-    "styled-components": "^5.3.3",
     "sweetalert2": "^11.4.4",
-    "sweetalert2-react-content": "^4.2.0"
+    "sweetalert2-react-content": "^4.2.0",
+    "web-vitals": "^2.1.4",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
     "@babel/eslint-parser": "^7.17.0",
-    "eslint": "^8.9.0",
+    "eslint": "^8.10.0",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-prettier": "^8.4.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-config-react-app": "^7.0.0",
     "eslint-plugin-flowtype": "^8.0.3",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react": "^7.29.3",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "prettier": "^2.5.1"
+    "prettier": "2.5.1"
   }
 }

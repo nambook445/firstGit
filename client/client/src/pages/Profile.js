@@ -6,7 +6,7 @@ import { Box, Card, Link, Container, Typography } from '@mui/material';
 import AuthLayout from '../layouts/AuthLayout';
 // components
 import Page from '../components/Page';
-import { Profile } from '../sections/authentication/profile';
+import { ProfileForm } from '../sections/authentication/profile';
 // import AuthSocial from '../sections/authentication/AuthSocial'; <AuthSocial /> Oauth용
 
 // ----------------------------------------------------------------------
@@ -61,12 +61,10 @@ export default function Profile() {
             <Typography variant="h4" gutterBottom>
               회원가입
             </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>
-              Oauth구현중
-            </Typography>
+            <Typography sx={{ color: 'text.secondary' }}>Oauth구현중</Typography>
           </Box>
 
-          <RegisterForm />
+          <ProfileForm />
 
           <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
             By registering, I agree to Minimal&nbsp;
