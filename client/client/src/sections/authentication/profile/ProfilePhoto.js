@@ -1,55 +1,48 @@
-import React, { useMemo } from 'react';
-import { useDropzone } from 'react-dropzone';
+import React, { useRef } from 'react';
+import Avatar from '@mui/material/Avatar';
+import ToggleButton from '@mui/material/ToggleButton';
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import axios from 'axios';
 
-const baseStyle = {
-  flex: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  padding: '20px',
-  borderWidth: 2,
-  borderRadius: 2,
-  borderColor: '#eeeeee',
-  borderStyle: 'dashed',
-  backgroundColor: '#fafafa',
-  color: '#bdbdbd',
-  outline: 'none',
-  transition: 'border .24s ease-in-out'
-};
+const Input = styled('input')({
+  display: 'none'
+});
+async function handleUpload(e) {
+  const formData = new FormData();
+  formData.append('profile_image', e.target.files[0]);
+  for (const keyValue of formData) console.log(keyValue);
+  await axios
+    .post('http://localhost:8080/profile', formData, { withCredentials: true })
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err.response));
+}
 
-const focusedStyle = {
-  borderColor: '#2196f3'
-};
+//mysql에 프로필사진 경로 등록하고 스테이트로 관리하기
+const profileName = 'http://localhost:8080/images/profile_image-1646559477470.png';
 
-const acceptStyle = {
-  borderColor: '#00e676'
-};
-
-const rejectStyle = {
-  borderColor: '#ff1744'
-};
-
-export default function ProfilePhoto(props) {
-  const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
-    accept: 'image/*'
-  });
-
-  const style = useMemo(
-    () => ({
-      ...baseStyle,
-      ...(isFocused ? focusedStyle : {}),
-      ...(isDragAccept ? acceptStyle : {}),
-      ...(isDragReject ? rejectStyle : {})
-    }),
-    [isFocused, isDragAccept, isDragReject]
-  );
-
+export default function ProfilePhoto() {
   return (
-    <div className="container">
-      <div {...getRootProps({ style })}>
-        <input {...getInputProps()} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
-      </div>
-    </div>
+    <Stack>
+      <Avatar src={profileName} sx={{ width: 56, height: 56 }}></Avatar>
+      <Box>
+        <label htmlFor="icon-button-file">
+          <Input
+            accept="image/*"
+            id="icon-button-file"
+            name="profile_img"
+            type="file"
+            onChange={handleUpload}
+          />
+          <IconButton color="primary" aria-label="upload picture" component="span">
+            <PhotoCamera />
+          </IconButton>
+        </label>
+      </Box>
+    </Stack>
   );
 }

@@ -136,7 +136,7 @@ export default function ProfileForm() {
             variant="contained"
             loading={isSubmitting}
           >
-            Register
+            정보 수정하기
           </LoadingButton>
         </Stack>
       </Form>

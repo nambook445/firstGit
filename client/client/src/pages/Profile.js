@@ -6,9 +6,8 @@ import { Box, Card, Link, Container, Typography } from '@mui/material';
 import AuthLayout from '../layouts/AuthLayout';
 // components
 import Page from '../components/Page';
-import { ProfileForm } from '../sections/authentication/profile';
+import { ProfileForm, ProfilePhoto } from '../sections/authentication/profile';
 // import AuthSocial from '../sections/authentication/AuthSocial'; <AuthSocial /> Oauth용
-
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({ theme }) => ({
@@ -61,8 +60,11 @@ export default function Profile() {
             <Typography variant="h4" gutterBottom>
               회원가입
             </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>Oauth구현중</Typography>
           </Box>
+
+          <ProfilePhoto />
+
+          <Typography sx={{ color: 'text.secondary' }}>프로필사진</Typography>
 
           <ProfileForm />
 
