@@ -35,6 +35,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
 });
 
 app.use(express.json());
@@ -268,8 +269,12 @@ app.post("/resister", (req, res) => {
 });
 
 app.post("/profile", upload.single("profile_image"), function (req, res, next) {
-  console.log(req.file);
-  res.send({
+  const profile_img = req.file.filename;
+  const update_sql = `UPDATE users SET image=? WHERE username=?`;
+  db.query(update_sql, [profile_img, req.user], function (err, results) {
+    if (err) throw err;
+  });
+  res.json({
     fileName: req.file.filename,
   });
 });
