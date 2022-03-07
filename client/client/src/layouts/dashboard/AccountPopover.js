@@ -8,6 +8,8 @@ import Iconify from '../../components/Iconify';
 import MenuPopover from '../../components/MenuPopover';
 //
 import account from '../../_mocks_/account';
+// axios
+import axios from 'axios';
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +31,20 @@ const MENU_OPTIONS = [
   }
 ];
 
-// ----------------------------------------------------------------------
+async function handleLogout() {
+  sessionStorage.removeItem('user');
+  await axios
+    .get('http://localhost:8080/logout', { withCredentials: true })
+    .then((res) => console.log(res).then(navigate('/dashboard/app', { replace: true })))
+    .catch((err) => console.log(err.response));
+}
+function LogoutButton() {
+  return (
+    <Button fullWidth color="inherit" variant="outlined" onClick={handleLogout}>
+      Logout
+    </Button>
+  );
+}
 
 export default function AccountPopover() {
   const anchorRef = useRef(null);
@@ -106,9 +121,7 @@ export default function AccountPopover() {
         ))}
 
         <Box sx={{ p: 2, pt: 1.5 }}>
-          <Button fullWidth color="inherit" variant="outlined">
-            Logout
-          </Button>
+          <LogoutButton />
         </Box>
       </MenuPopover>
     </>
