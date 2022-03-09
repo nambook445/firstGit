@@ -108,7 +108,7 @@ export default function PaperPage() {
           title: '작성완료',
           showConfirmButton: false,
           timer: 1500
-        }).then(navigate('/dashboard/blog', { replace: true }));
+        }).then((document.location = 'http://localhost:3000/dashboard/blog'));
       })
       .catch(
         (err) => console.log(err.response)
