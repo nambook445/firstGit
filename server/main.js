@@ -21,7 +21,7 @@ const test = require("./Router/test");
 const multer = require("multer"); // 이미지 업로드
 const storage = multer.diskStorage({
   destination: (req, file, callBack) => {
-    callBack(null, "./public/images/"); // './public/images/' directory name where save the file
+    callBack(null, "./public/images/profile"); // './public/images/' directory name where save the file
   },
   filename: (req, file, callBack) => {
     callBack(
@@ -64,10 +64,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function (user, done) {
-  done(null, user.username);
+  done(null, user.id);
 });
 passport.deserializeUser(function (id, done) {
-  db.query(`SELECT * FROM users WHERE username=?`, [id], (err, results) => {
+  db.query(`SELECT * FROM users WHERE id=?`, [id], (err, results) => {
     if (err) {
       done(null, false);
     } else {
@@ -95,7 +95,9 @@ passport.use(
   })
 );
 
-app.use("/api", test);
+app.use("/api", test, (req, res) => {
+  console.log(req);
+});
 
 app.get("/fetch", (req, res) => res.render("fetch"));
 
@@ -266,10 +268,10 @@ app.post("/resister", (req, res) => {
   });
 });
 
-app.post("/profile", upload.single("profile_image"), function (req, res, next) {
-  const profile_img = req.file.filename;
-  const update_sql = `UPDATE users SET image=? WHERE username=?`;
-  db.query(update_sql, [profile_img, req.user], function (err, results) {
+app.post("/profile", upload.single("profile_image"), function (req, res) {
+  const profile_image = req.file.filename;
+  const update_sql = `UPDATE users SET image=? WHERE id=?`;
+  db.query(update_sql, [profile_image, req.user], function (err, results) {
     if (err) throw err;
   });
   res.json({

@@ -13,9 +13,6 @@ const Input = styled('input')({
   display: 'none'
 });
 async function handleUpload(e) {
-  const data = {
-    id: 57
-  };
   const formData = new FormData();
   formData.append('profile_image', e.target.files[0]);
   await axios
@@ -25,7 +22,7 @@ async function handleUpload(e) {
 }
 const state = 'profile_image-1646627947284.png';
 //mysql에 프로필사진 경로 등록하고 스테이트로 관리하기
-const profileName = `http://localhost:8080/images/${state}`;
+const profileName = `http://localhost:8080/images/profile/${state}`;
 
 export default function ProfilePhoto() {
   return (

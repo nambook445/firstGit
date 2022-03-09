@@ -11,6 +11,7 @@ import Blog from './pages/Blog';
 import User from './pages/User';
 import Profile from './pages/Profile';
 import NotFound from './pages/Page404';
+import Paper from './pages/Paper';
 
 // ----------------------------------------------------------------------
 
@@ -21,6 +22,7 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { path: 'app', element: <DashboardApp /> },
+        { path: 'paper', element: <Paper /> },
         { path: 'user', element: <User /> },
         { path: 'products', element: <Products /> },
         { path: 'blog', element: <Blog /> }

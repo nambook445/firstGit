@@ -43,7 +43,7 @@ export default function LoginForm() {
         .post('http://localhost:8080/login', data, {
           withCredentials: true
         })
-        .then((res) => sessionStorage.setItem('user', res.data.user.username))
+        .then((res) => sessionStorage.setItem('user', res.data.user.nickname))
         .then((res) => {
           MySwal.fire({
             icon: 'success',
