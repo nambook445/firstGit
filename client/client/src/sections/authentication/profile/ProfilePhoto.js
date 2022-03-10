@@ -1,8 +1,6 @@
 import React, { useRef } from 'react';
 import Avatar from '@mui/material/Avatar';
-import ToggleButton from '@mui/material/ToggleButton';
 import { styled } from '@mui/material/styles';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import Stack from '@mui/material/Stack';
@@ -20,7 +18,7 @@ async function handleUpload(e) {
     .then((res) => console.log(res))
     .catch((err) => console.log(err.response));
 }
-const state = 'profile_image-1646627947284.png';
+const state = '';
 //mysql에 프로필사진 경로 등록하고 스테이트로 관리하기
 const profileName = `http://localhost:8080/images/profile/${state}`;
 

@@ -3,7 +3,6 @@ import { Link as RouterLink } from 'react-router-dom';
 // material
 import {
   Typography,
-  Input,
   Button,
   Stack,
   TextField,
@@ -34,9 +33,7 @@ const modules = {
     [{ header: [1, 2, false] }],
     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
     [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-    [
-      'link' //'image'
-    ],
+    ['link'],
     [{ align: [] }, { color: [] }, { background: [] }]
   ]
 };
@@ -53,7 +50,6 @@ const formats = [
   'bullet',
   'indent',
   'link',
-  // 'image',
   'align',
   'color',
   'background'
@@ -65,7 +61,7 @@ const formats = [
 
 export default function PaperPage() {
   const [desc, setdesc] = useState('');
-  const [imgBase64, setImgBase64] = useState(''); // 파일 base64
+  const [imgBase64, setImgBase64] = useState(null); // 파일 base64
   const [imgFile, setImgFile] = useState(null); //파일
   const Input = styled('input')({
     display: 'none'
@@ -138,10 +134,15 @@ export default function PaperPage() {
           </Button>
         </label>
       </Stack>
-      <Stack>
-        <Card sx={{ minWidth: 345 }}>
+      <Stack sx={{ alignItems: 'center' }}>
+        <Card sx={{ width: '60vw', height: 'auto', justifyContent: 'center' }}>
           <form onSubmit={handleSubmit}>
-            <CardMedia component="img" height="140" src={imgBase64} alt="green iguana" />
+            <CardMedia
+              sx={{ width: '100%', height: 'auto' }}
+              component="img"
+              height="140"
+              src={imgBase64}
+            />
             <CardContent>
               <TextField
                 id="standard-basic"
@@ -154,7 +155,7 @@ export default function PaperPage() {
               />
 
               <ReactQuill
-                style={{ height: '600px' }}
+                style={{ height: '60vh' }}
                 theme="snow"
                 modules={modules}
                 formats={formats}
@@ -162,8 +163,15 @@ export default function PaperPage() {
                 onChange={handleOnChange}
               />
             </CardContent>
-            <CardActions>
-              <Button fullWidth size="small" type="submit" variant="contained">
+
+            <CardActions sx={{ p: 0, mt: 4.4, mb: 2, justifyContent: 'center' }}>
+              <Button
+                fullWidth
+                size="small"
+                type="submit"
+                variant="contained"
+                sx={{ width: '30%' }}
+              >
                 확인
               </Button>
             </CardActions>

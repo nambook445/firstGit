@@ -58,7 +58,7 @@ export default function Profile() {
         <ContentStyle>
           <Box sx={{ mb: 5 }}>
             <Typography variant="h4" gutterBottom>
-              회원가입
+              회원 정보
             </Typography>
           </Box>
 

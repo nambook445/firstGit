@@ -34,7 +34,7 @@ const sidebarConfig = [
   {
     title: 'profile',
     path: '/profile',
-    icon: getIcon('eva:people-fill')
+    icon: getIcon('eva:person-fill')
   }
   // 404 페이지
   // ,
