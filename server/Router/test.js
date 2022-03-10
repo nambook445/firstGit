@@ -22,10 +22,10 @@ const upload = multer({
 });
 
 router.get("/", (req, res) => {
-  const sql = `SELECT topic.id, topic.title, topic.description, DATE_FORMAT(topic.created, '%Y-%m-%d') AS created, users.nickname FROM topic LEFT JOIN users ON topic.user_id = users.id ORDER BY topic.id DESC `;
+  const sql = `SELECT topic.id, topic.title, topic.description, DATE_FORMAT(topic.created, '%Y-%m-%d') AS created, topic.image, users.nickname, users.image AS profile FROM topic LEFT JOIN users ON topic.user_id = users.id ORDER BY topic.id DESC `;
   db.query(sql, (err, results) => {
     const data = results;
-    res.send({ test: data });
+    res.json(data);
   });
 });
 

@@ -1,12 +1,13 @@
+import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import { Grid, Button, Container, Stack, Typography } from '@mui/material';
 // components
 import Page from '../components/Page';
 import Iconify from '../components/Iconify';
-import { BlogPostCard, BlogPostsSort, BlogPostsSearch } from '../sections/@dashboard/blog';
-//
-import POSTS from '../_mocks_/blog';
+import { BlogPost } from '../sections/@dashboard/blog';
+
+import axios from 'axios';
 
 // ----------------------------------------------------------------------
 
@@ -19,6 +20,17 @@ const SORT_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function Blog() {
+  const [posts, setPosts] = useState([]);
+  const [status, setStatus] = useState(false);
+  useEffect(async () => {
+    await axios
+      .get('http://localhost:8080/api')
+      .then((res) => setPosts(res.data))
+      .then((res) => setStatus(true))
+      .catch((err) => err.response);
+  }, []);
+
+  console.log(posts);
   return (
     <Page title="Dashboard: Blog | Minimal-UI">
       <Container>
@@ -29,22 +41,26 @@ export default function Blog() {
           <Button
             variant="contained"
             component={RouterLink}
-            to="#"
+            to="/dashboard/paper"
             startIcon={<Iconify icon="eva:plus-fill" />}
           >
             New Post
           </Button>
         </Stack>
 
-        <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
-          <BlogPostsSearch posts={POSTS} />
-          <BlogPostsSort options={SORT_OPTIONS} />
-        </Stack>
-
+        <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between"></Stack>
         <Grid container spacing={3}>
-          {POSTS.map((post, index) => (
-            <BlogPostCard key={post.id} post={post} index={index} />
-          ))}
+          {status &&
+            posts.map((posts) => (
+              <BlogPost
+                key={posts.id}
+                title={posts.title}
+                created={posts.created}
+                image={posts.image}
+                nickname={posts.nickname}
+                profile={posts.profile}
+              />
+            ))}
         </Grid>
       </Container>
     </Page>
