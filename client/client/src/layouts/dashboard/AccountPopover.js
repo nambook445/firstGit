@@ -1,51 +1,41 @@
-import { useRef, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { useRef, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 // material
-import { alpha } from "@mui/material/styles";
-import {
-  Button,
-  Box,
-  Divider,
-  MenuItem,
-  Typography,
-  Avatar,
-  IconButton,
-} from "@mui/material";
+import { alpha } from '@mui/material/styles';
+import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '@mui/material';
 // components
-import Iconify from "../../components/Iconify";
-import MenuPopover from "../../components/MenuPopover";
+import Iconify from '../../components/Iconify';
+import MenuPopover from '../../components/MenuPopover';
 //
-import account from "../../_mocks_/account";
+import account from '../../_mocks_/account';
 // axios
-import axios from "axios";
+import axios from 'axios';
 
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
   {
-    label: "Home",
-    icon: "eva:home-fill",
-    linkTo: "/",
+    label: 'Home',
+    icon: 'eva:home-fill',
+    linkTo: '/'
   },
   {
-    label: "Profile",
-    icon: "eva:person-fill",
-    linkTo: "/profile",
+    label: 'Profile',
+    icon: 'eva:person-fill',
+    linkTo: '/profile'
   },
   {
-    label: "Settings",
-    icon: "eva:settings-2-fill",
-    linkTo: "#",
-  },
+    label: 'Settings',
+    icon: 'eva:settings-2-fill',
+    linkTo: '#'
+  }
 ];
 
 async function handleLogout() {
-  sessionStorage.removeItem("user");
+  sessionStorage.removeItem('user');
   await axios
-    .get("http://localhost:8080/logout", { withCredentials: true })
-    .then((res) =>
-      console.log(res).then(navigate("/dashboard/app", { replace: true }))
-    )
+    .get('http://localhost:8080/logout', { withCredentials: true })
+    .then((res) => console.log(res).then(navigate('/dashboard/app', { replace: true })))
     .catch((err) => console.log(err.response));
 }
 function LogoutButton() {
@@ -77,16 +67,16 @@ export default function AccountPopover() {
           width: 44,
           height: 44,
           ...(open && {
-            "&:before": {
+            '&:before': {
               zIndex: 1,
               content: "''",
-              width: "100%",
-              height: "100%",
-              borderRadius: "50%",
-              position: "absolute",
-              bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72),
-            },
-          }),
+              width: '100%',
+              height: '100%',
+              borderRadius: '50%',
+              position: 'absolute',
+              bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72)
+            }
+          })
         }}
       >
         <Avatar src={account.photoURL} alt="photoURL" />
@@ -102,7 +92,7 @@ export default function AccountPopover() {
           <Typography variant="subtitle1" noWrap>
             {account.displayName}
           </Typography>
-          <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
             {account.email}
           </Typography>
         </Box>
@@ -115,14 +105,14 @@ export default function AccountPopover() {
             to={option.linkTo}
             component={RouterLink}
             onClick={handleClose}
-            sx={{ typography: "body2", py: 1, px: 2.5 }}
+            sx={{ typography: 'body2', py: 1, px: 2.5 }}
           >
             <Iconify
               icon={option.icon}
               sx={{
                 mr: 2,
                 width: 24,
-                height: 24,
+                height: 24
               }}
             />
 
