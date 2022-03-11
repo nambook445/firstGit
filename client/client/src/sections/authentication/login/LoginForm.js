@@ -77,6 +77,7 @@ export default function LoginForm() {
             autoComplete="username"
             type="text"
             label="ID"
+            autoFocus={true}
             {...getFieldProps('username')}
             error={Boolean(touched.username && errors.username)}
             helperText={touched.username && errors.username}

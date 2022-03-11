@@ -83,7 +83,6 @@ export default function ProfileForm() {
         <Stack spacing={3}>
           <TextField
             fullWidth
-            autoComplete="username"
             type="text"
             label="ID"
             {...getFieldProps('username')}

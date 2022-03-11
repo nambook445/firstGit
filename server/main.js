@@ -78,6 +78,12 @@ passport.deserializeUser(function (id, done) {
 
 passport.use(
   new LocalStrategy((username, password, done) => {
+    // 에러처리는 다음에하자
+    // if (username === undefined) {
+    //   return done(null, false, { message: "아이디를 입력하세요." });
+    // } else if (password === null) {
+    //   return done(null, false, { message: "비밀번호를 입력하세요." });
+    // }
     db.query(
       `SELECT * FROM users WHERE username =?`,
       [username],

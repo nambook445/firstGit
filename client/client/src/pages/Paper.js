@@ -106,7 +106,7 @@ export default function PaperPage() {
           title: '작성완료',
           showConfirmButton: false,
           timer: 1500
-        }).then((document.location = 'http://localhost:3000/dashboard/blog'));
+        }).then((document.location = 'http://localhost:3000/blog'));
       })
       .catch(
         (err) => console.log(err.response)
@@ -115,6 +115,12 @@ export default function PaperPage() {
         //   title: JSON.stringify(err.response)
         // })
       );
+  };
+  // Enter키로 submit되는 상황방지
+  const handleOnKeyPress = (e) => {
+    if (e.code === 'Enter') {
+      e.preventDefault();
+    }
   };
 
   return (
@@ -127,7 +133,6 @@ export default function PaperPage() {
           <Input
             accept="image/*"
             id="contained-button-file"
-            //multiple 일단은 싱글 이미지만 구현해보자
             type="file"
             onChange={handleChangeFile}
           />
@@ -138,7 +143,7 @@ export default function PaperPage() {
       </Stack>
       <Stack sx={{ alignItems: 'center' }}>
         <Card sx={{ width: '60vw', height: 'auto', justifyContent: 'center' }}>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} onKeyPress={handleOnKeyPress}>
             <CardMedia
               sx={{ width: '100%', height: 'auto' }}
               component="img"
@@ -153,7 +158,10 @@ export default function PaperPage() {
                 size="small"
                 margin="normal"
                 fullWidth
+                autoComplete="off"
+                autoFocus={true}
                 color="grey"
+                required
               />
 
               <ReactQuill
@@ -162,7 +170,7 @@ export default function PaperPage() {
                 modules={modules}
                 formats={formats}
                 value={desc}
-                placeholder="가상선택자"
+                required
                 onChange={handleOnChange}
               />
             </CardContent>

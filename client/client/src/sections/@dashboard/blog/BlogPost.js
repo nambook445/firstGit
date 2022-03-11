@@ -8,6 +8,7 @@ import { Box, Link, Card, Grid, Avatar, Typography, CardContent } from '@mui/mat
 import SvgIconStyle from '../../../components/SvgIconStyle';
 import Iconify from '../../../components/Iconify';
 
+import PropTypes from 'prop-types';
 // ----------------------------------------------------------------------
 
 const CardMediaStyle = styled('div')({
@@ -49,18 +50,46 @@ const CoverImgStyle = styled('img')({
 });
 
 // ----------------------------------------------------------------------
+BlogPost.propTypes = {
+  post: PropTypes.object.isRequired,
+  index: PropTypes.number
+};
 
-export default function BlogPost(post) {
-  console.log(post);
+export default function BlogPost(post, index) {
+  const latestPostLarge = index === 0;
+  const latestPost = index === 1 || index === 2;
+  function ImageSector(image) {
+    console.log(image);
+    if (image.image !== null) {
+      return (
+        <CoverImgStyle alt={image.image} src={`http://localhost:8080/images/post/${image.image}`} />
+      );
+    } else {
+      return null;
+    }
+  }
   return (
-    <Grid item xs={12} sm={6} md={3}>
+    <Grid item xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 6 : 3}>
       <Card key={post.id} sx={{ position: 'relative' }}>
         <CardMediaStyle
           sx={{
-            pt: {
-              xs: 'calc(100% * 4 / 3)',
-              sm: 'calc(100% * 3 / 4.66)'
-            }
+            ...((latestPostLarge || latestPost) && {
+              pt: 'calc(100% * 4 / 3)',
+              '&:after': {
+                top: 0,
+                content: "''",
+                width: '100%',
+                height: '100%',
+                position: 'absolute',
+                bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72)
+              }
+            }),
+            ...(latestPostLarge && {
+              pt: {
+                xs: 'calc(100% * 4 / 3)',
+                sm: 'calc(100% * 3 / 4.66)'
+              }
+            })
           }}
         >
           <SvgIconStyle
@@ -71,28 +100,33 @@ export default function BlogPost(post) {
               height: 36,
               zIndex: 9,
               bottom: -15,
-              position: 'absolute'
+              position: 'absolute',
+              ...((latestPostLarge || latestPost) && { display: 'none' })
             }}
           />
           <AvatarStyle
             alt={post.nickname}
             src={`http://localhost:8080/images/profile/${post.profile}`}
             sx={{
-              zIndex: 9,
-              top: 24,
-              left: 24,
-              width: 40,
-              height: 40
+              ...((latestPostLarge || latestPost) && {
+                zIndex: 9,
+                top: 24,
+                left: 24,
+                width: 40,
+                height: 40
+              })
             }}
           />
-          <CoverImgStyle alt={post.title} src={`http://localhost:8080/images/post/${post.image}`} />
+          <ImageSector image={post.image} />
         </CardMediaStyle>
         <CardContent
           sx={{
             pt: 4,
-            bottom: 0,
-            width: '100%',
-            position: 'absolute'
+            ...((latestPostLarge || latestPost) && {
+              bottom: 0,
+              width: '100%',
+              position: 'absolute'
+            })
           }}
         >
           <Typography
@@ -110,7 +144,10 @@ export default function BlogPost(post) {
             underline="hover"
             component={RouterLink}
             sx={{
-              color: 'black'
+              ...(latestPostLarge && { typography: 'h5', height: 60 }),
+              ...((latestPostLarge || latestPost) && {
+                color: 'common.white'
+              })
             }}
           >
             {post.title}
@@ -118,12 +155,14 @@ export default function BlogPost(post) {
 
           <InfoStyle>
             <Box
-              key={post.id}
+              key={index}
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                ml: 1.5,
-                color: 'grey.500'
+                ml: index === 0 ? 0 : 1.5,
+                ...((latestPostLarge || latestPost) && {
+                  color: 'grey.500'
+                })
               }}
             >
               <Iconify sx={{ width: 16, height: 16, mr: 0.5 }} />
