@@ -23,6 +23,8 @@ import 'react-quill/dist/quill.snow.css';
 import { styled } from '@mui/material/styles';
 // axios
 import axios from 'axios';
+// css
+import './Paper.css';
 
 // ----------------------------------------------------------------------
 // //
@@ -117,7 +119,7 @@ export default function PaperPage() {
 
   return (
     <Page title="Dashboard: Paper | Minimal-UI">
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
         <Typography variant="h4" gutterBottom>
           Paper
         </Typography>
@@ -143,7 +145,7 @@ export default function PaperPage() {
               height="140"
               src={imgBase64}
             />
-            <CardContent>
+            <CardContent sx={{ py: 0 }}>
               <TextField
                 id="standard-basic"
                 label="Title"
@@ -155,16 +157,17 @@ export default function PaperPage() {
               />
 
               <ReactQuill
-                style={{ height: '60vh' }}
+                style={{ height: 'auto' }}
                 theme="snow"
                 modules={modules}
                 formats={formats}
                 value={desc}
+                placeholder="가상선택자"
                 onChange={handleOnChange}
               />
             </CardContent>
 
-            <CardActions sx={{ p: 0, mt: 4.4, mb: 2, justifyContent: 'center' }}>
+            <CardActions sx={{ p: 0, my: 1, justifyContent: 'center' }}>
               <Button
                 fullWidth
                 size="small"

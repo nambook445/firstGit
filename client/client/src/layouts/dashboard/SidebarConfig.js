@@ -7,17 +7,17 @@ const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
 const sidebarConfig = [
   {
     title: 'dashboard',
-    path: '/dashboard/app',
+    path: '/app',
     icon: getIcon('eva:pie-chart-2-fill')
   },
   {
     title: 'paper',
-    path: '/dashboard/paper',
+    path: '/paper',
     icon: getIcon('jam:pen-f')
   },
   {
     title: 'blog',
-    path: '/dashboard/blog',
+    path: '/blog',
     icon: getIcon('eva:file-text-fill')
   },
   // login 과 resister는 redux 도입 후에 로그인 상태 여부에 따라 렌더링 할 예정

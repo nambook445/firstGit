@@ -18,14 +18,17 @@ import Paper from './pages/Paper';
 export default function Router() {
   return useRoutes([
     {
-      path: '/dashboard',
+      path: '/',
       element: <DashboardLayout />,
       children: [
         { path: 'app', element: <DashboardApp /> },
         { path: 'paper', element: <Paper /> },
         { path: 'user', element: <User /> },
         { path: 'products', element: <Products /> },
-        { path: 'blog', element: <Blog /> }
+        { path: 'blog', element: <Blog /> },
+        { path: 'profile', element: <Profile /> },
+        { path: 'login', element: <Login /> },
+        { path: 'register', element: <Register /> }
       ]
     },
     {
@@ -33,9 +36,6 @@ export default function Router() {
       element: <LogoOnlyLayout />,
       children: [
         { path: '/', element: <Navigate to="/dashboard/app" /> },
-        { path: 'profile', element: <Profile /> },
-        { path: 'login', element: <Login /> },
-        { path: 'register', element: <Register /> },
         { path: '404', element: <NotFound /> },
         { path: '*', element: <Navigate to="/404" /> }
       ]

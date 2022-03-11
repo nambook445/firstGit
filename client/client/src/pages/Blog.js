@@ -11,14 +11,6 @@ import axios from 'axios';
 
 // ----------------------------------------------------------------------
 
-const SORT_OPTIONS = [
-  { value: 'latest', label: 'Latest' },
-  { value: 'popular', label: 'Popular' },
-  { value: 'oldest', label: 'Oldest' }
-];
-
-// ----------------------------------------------------------------------
-
 export default function Blog() {
   const [posts, setPosts] = useState([]);
   const [status, setStatus] = useState(false);
