@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 // material
 import {
   Typography,
@@ -61,56 +61,84 @@ const formats = [
 
 // ----------------------------------------------------------------------
 
-export default function PaperPage() {
-  const [desc, setdesc] = useState('');
-  const [imgBase64, setImgBase64] = useState(null); // 파일 base64
+export default function TopicPage() {
+  const [status, setStatus] = useState(false);
+  const [id, setId] = useState('');
+  const [title, setTitle] = useState('');
+  const [desc, setDesc] = useState('');
+  const [imageFileNameFromServer, setImageFileNameFromServer] = useState('');
+  const [imageUpdate, setImageUpdate] = useState(false);
+  const [imgBase64, setImgBase64] = useState(null); // image파일 base64
   const [imgFile, setImgFile] = useState(null); //파일
+  const params = useParams();
+  // SweetAlert2
+  const MySwal = withReactContent(Swal);
+
+  useEffect(async () => {
+    await axios
+      .post('http://localhost:8080/api/topic', params, {
+        withCredentials: true
+      })
+      .then((res) => {
+        setId(res.data[0].id);
+        setTitle(res.data[0].title);
+        handleOnChange(res.data[0].description);
+        setImageFileNameFromServer(res.data[0].image);
+      })
+      .catch((err) => err.response);
+  }, []);
+  console.log(title);
   const Input = styled('input')({
     display: 'none'
   });
-  // SweetAlert2
-  const MySwal = withReactContent(Swal);
+
   function handleOnChange(value) {
-    setdesc(value);
+    setDesc(value);
   }
 
   const handleChangeFile = (e) => {
+    e.preventDefault();
+    setStatus(true);
+    setImageUpdate(true);
     let reader = new FileReader();
-
     reader.onloadend = () => {
-      // 2. 읽기가 완료되면 아래코드가 실행됩니다.
       const base64 = reader.result;
       if (base64) {
-        setImgBase64(base64.toString()); // 파일 base64 상태 업데이트
+        setImgBase64(base64.toString());
       }
     };
     if (e.target.files[0]) {
-      reader.readAsDataURL(e.target.files[0]); // 1. 파일을 읽어 버퍼에 저장합니다.
-      setImgFile(e.target.files[0]); // 파일 상태 업데이트
+      reader.readAsDataURL(e.target.files[0]);
+      setImgFile(e.target.files[0]);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     let data = new FormData();
     data.append('post_image', imgFile);
+    data.set('id', id);
     data.set('title', e.target[0].value);
     data.set('description', desc);
+    data.set('imageFileNameFromServer', imageFileNameFromServer);
+
     for (var pair of data.entries()) {
       console.log(pair[0] + ', ' + pair[1]);
     }
 
     await axios
-      .post('http://localhost:8080/api/paper', data, {
+      .put('http://localhost:8080/api/topic', data, {
         withCredentials: true
       })
       .then((res) => {
-        MySwal.fire({
-          icon: 'success',
-          title: '작성완료',
-          showConfirmButton: false,
-          timer: 1500
-        }).then((document.location = 'http://localhost:3000/blog'));
+        console.log(res);
+        // MySwal.fire({
+        //   icon: 'success',
+        //   title: '수정완료',
+        //   showConfirmButton: false,
+        //   timer: 1500
+        // }).then((document.location = 'http://localhost:3000/blog'));
       })
       .catch(
         (err) => console.log(err.response)
@@ -120,6 +148,33 @@ export default function PaperPage() {
         // })
       );
   };
+
+  function CardImage(props) {
+    if (imageFileNameFromServer !== null) {
+      return (
+        <CardMedia
+          sx={{ width: '100%', height: 'auto' }}
+          component="img"
+          height="140"
+          src={
+            props.status && props.imageUpdate
+              ? props.imgBase64
+              : `http://localhost:8080/images/post/${imageFileNameFromServer}`
+          }
+        />
+      );
+    } else {
+      return (
+        <CardMedia
+          sx={{ width: '100%', height: 'auto' }}
+          component="img"
+          height="140"
+          src={imgBase64}
+        />
+      );
+    }
+  }
+
   // Enter키로 submit되는 상황방지
   const handleOnKeyPress = (e) => {
     if (e.code === 'Enter') {
@@ -147,13 +202,14 @@ export default function PaperPage() {
       </Stack>
       <Stack sx={{ alignItems: 'center' }}>
         <Card sx={{ width: '60vw', height: 'auto', justifyContent: 'center' }}>
-          <form onSubmit={handleSubmit} onKeyPress={handleOnKeyPress}>
-            <CardMedia
-              sx={{ width: '100%', height: 'auto' }}
-              component="img"
-              height="140"
-              src={imgBase64}
+          <form key={id} onSubmit={handleSubmit} onKeyPress={handleOnKeyPress}>
+            <CardImage
+              imageUpdate={imageUpdate}
+              imgBase64={imgBase64}
+              status={status}
+              imageFileNameFromServer={imageFileNameFromServer}
             />
+
             <CardContent sx={{ py: 0 }}>
               <TextField
                 id="standard-basic"
@@ -163,9 +219,10 @@ export default function PaperPage() {
                 margin="normal"
                 fullWidth
                 autoComplete="off"
-                autoFocus={true}
                 color="grey"
                 required
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
               />
 
               <ReactQuill

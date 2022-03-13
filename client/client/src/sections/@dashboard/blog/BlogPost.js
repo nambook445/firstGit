@@ -37,7 +37,7 @@ const InfoStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   flexWrap: 'wrap',
   justifyContent: 'flex-end',
-  marginTop: theme.spacing(3),
+  marginTop: theme.spacing(1),
   color: theme.palette.text.disabled
 }));
 
@@ -58,14 +58,19 @@ BlogPost.propTypes = {
 export default function BlogPost(post, index) {
   const latestPostLarge = index === 0;
   const latestPost = index === 1 || index === 2;
-  function ImageSector(image) {
-    console.log(image);
+  console.log(post.id);
+  function CoverImg(image) {
     if (image.image !== null) {
       return (
         <CoverImgStyle alt={image.image} src={`http://localhost:8080/images/post/${image.image}`} />
       );
     } else {
-      return null;
+      return (
+        <CoverImgStyle
+          alt={image.image}
+          src={`http://localhost:8080/assets/images/basic-post.jpg`}
+        />
+      );
     }
   }
   return (
@@ -117,11 +122,12 @@ export default function BlogPost(post, index) {
               })
             }}
           />
-          <ImageSector image={post.image} />
+          <CoverImg image={post.image} />
         </CardMediaStyle>
         <CardContent
           sx={{
             pt: 4,
+            pb: 0,
             ...((latestPostLarge || latestPost) && {
               bottom: 0,
               width: '100%',
@@ -138,7 +144,7 @@ export default function BlogPost(post, index) {
           </Typography>
 
           <TitleStyle
-            to="#"
+            to={`/topic/${post.id}`}
             color="inherit"
             variant="subtitle2"
             underline="hover"
@@ -165,8 +171,7 @@ export default function BlogPost(post, index) {
                 })
               }}
             >
-              <Iconify sx={{ width: 16, height: 16, mr: 0.5 }} />
-              <Typography variant="caption">{post.nickname}</Typography>
+              <Typography variant="caption">{post.created}</Typography>
             </Box>
           </InfoStyle>
         </CardContent>

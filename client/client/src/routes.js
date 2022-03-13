@@ -12,6 +12,7 @@ import User from './pages/User';
 import Profile from './pages/Profile';
 import NotFound from './pages/Page404';
 import Paper from './pages/Paper';
+import Topic from './pages/Topic';
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +29,8 @@ export default function Router() {
         { path: 'blog', element: <Blog /> },
         { path: 'profile', element: <Profile /> },
         { path: 'login', element: <Login /> },
-        { path: 'register', element: <Register /> }
+        { path: 'register', element: <Register /> },
+        { path: 'topic/:id', element: <Topic /> }
       ]
     },
     {

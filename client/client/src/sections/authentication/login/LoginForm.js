@@ -50,7 +50,7 @@ export default function LoginForm() {
             title: '로그인 성공',
             showConfirmButton: false,
             timer: 1500
-          }).then(navigate('/dashboard/app', { replace: true }));
+          }).then(navigate('/app', { replace: true }));
         })
         .catch((err) =>
           MySwal.fire({
