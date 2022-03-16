@@ -81,7 +81,7 @@ router.post("/paper", upload.single("post_image"), (req, res) => {
 // 청소를 잘하자 진짜 어지러우니까
 router.put("/topic", upload.single("post_image"), (req, res) => {
   console.log(req.body);
-  if (req.body.post_image === null) {
+  if (req.body.post_image == "null") {
     const sql = `UPDATE topic SET title=?, description=? WHERE id=?`;
     db.query(
       sql,
@@ -90,7 +90,8 @@ router.put("/topic", upload.single("post_image"), (req, res) => {
         res.status(200).send("ok");
       }
     );
-  } else if (req.body.imageFileNameFromServer && req.body.post_image !== null) {
+  } else if (req.file.filename) {
+    console.log("너가 왜나와");
     const sql = `UPDATE topic SET title=?, description=?, image=? WHERE id=?`;
     db.query(
       sql,
